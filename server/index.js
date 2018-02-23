@@ -3,11 +3,24 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
+var session      = require('express-session');
+const passport = require('passport');
 
 // Get our API routes
 const api = require('./routes/api');
+const auth = require('./routes/auth');
 
 const app = express();
+
+app.use(session({
+    secret: 'bcjdkwwegljkrwefjweghewuo', // session secret
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+require('./config/dbConfig');
+require('./auth');
 
 // Parsers for POST data
 app.use(bodyParser.json());
@@ -18,6 +31,7 @@ app.use(express.static(path.join(__dirname, '../frontendApp/dist')));
 
 // Set our api routes
 app.use('/api', api);
+app.use('/auth', auth);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {

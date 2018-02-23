@@ -7,6 +7,10 @@ import { AuthService} from '../auth.service';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
+  private socialUrls = {
+      google : "/auth/google",
+      facebook : "/auth/facebook"
+  }
 
   constructor(private authService : AuthService) { }
 

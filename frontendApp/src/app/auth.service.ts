@@ -8,12 +8,22 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthService {
-  private _facebookUrl:string = "/api/authFacebook";
+  private googleUrl:string = "/auth/google";
+  authData = {
+    isLoggedIn: false,
+    user : null
+  };
+  private checkAuthUrl: string = "/auth/check";
 
   constructor(private http: HttpClient) { }
 
+  checkAuth(){
+    return this.http.post<any>(this.checkAuthUrl,{});
+  }
+
+
   authWithGoogle(){
-    return this.http.get(this._facebookUrl)
+    return this.http.get(this.googleUrl)
         .map(data => data)
         .catch(this._handleError);
 
